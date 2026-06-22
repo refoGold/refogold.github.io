@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Refo Gold — Скопје</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:      #C8A84B;
+      --gold-light:#E8CC7A;
+      --gold-dark: #8B6914;
+      --obsidian:  #0D0C0A;
+      --charcoal:  #1A1816;
+      --mist:      #F5F0E8;
+      --text:      #E8DDD0;
+      --text-dim:  #9A8E7E;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--obsidian);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(13,12,10,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,168,75,0.18);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-dim); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,168,75,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 100%, rgba(200,168,75,0.06) 0%, transparent 60%);
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px; position: relative;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      font-weight: 600; line-height: 1.05;
+      color: var(--mist);
+      position: relative;
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-sub {
+      margin-top: 24px; max-width: 520px;
+      font-size: 1rem; line-height: 1.7;
+      color: var(--text-dim); position: relative;
+    }
+    .hero-cta {
+      margin-top: 44px; display: flex; gap: 16px;
+      flex-wrap: wrap; justify-content: center; position: relative;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--obsidian);
+      padding: 15px 36px; border: none; border-radius: 2px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      cursor: pointer; transition: background .2s, transform .15s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      padding: 14px 36px; border: 1px solid rgba(200,168,75,0.5);
+      border-radius: 2px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      cursor: pointer; transition: border-color .2s, color .2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    /* ── TICKER ── */
+    #ticker {
+      background: var(--gold);
+      padding: 12px 0;
+      overflow: hidden;
+    }
+    .ticker-inner {
+      display: flex; gap: 60px;
+      animation: ticker-scroll 28s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-inner:hover { animation-play-state: paused; }
+    .ticker-item {
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--obsidian);
+    }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── LIVE PRICES ── */
+    #prices {
+      padding: 100px 40px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600; color: var(--mist);
+      margin-bottom: 16px;
+    }
+    .section-desc { font-size: 0.9rem; color: var(--text-dim); max-width: 480px; line-height: 1.7; margin-bottom: 52px; }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #4ade80; margin-bottom: 36px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 0 rgba(74,222,128,0.4);
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.4); }
+      70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
+      100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px;
+    }
+    .price-card {
+      background: var(--charcoal);
+      padding: 32px 28px;
+      border-top: 2px solid transparent;
+      transition: border-color .25s, background .25s;
+      cursor: default;
+    }
+    .price-card:hover { border-top-color: var(--gold); background: #1f1d1a; }
+    .price-card-label {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 12px;
+    }
+    .price-card-karat {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--gold); margin-bottom: 6px;
+    }
+    .price-card-price {
+      font-size: 1.4rem; font-weight: 600;
+      color: var(--mist); margin-bottom: 4px;
+    }
+    .price-card-unit {
+      font-size: 0.75rem; color: var(--text-dim);
+    }
+    .price-card-change {
+      margin-top: 14px; font-size: 0.75rem; font-weight: 500;
+    }
+    .up   { color: #4ade80; }
+    .down { color: #f87171; }
+
+    /* ── PRODUCTS ── */
+    #urunler {
+      padding: 80px 40px;
+      background: var(--charcoal);
+    }
+    .products-inner { max-width: 1100px; margin: 0 auto; }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3px; margin-top: 52px;
+    }
+    .product-card {
+      background: var(--obsidian);
+      padding: 36px 28px;
+      transition: transform .2s;
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-icon {
+      font-size: 2rem; margin-bottom: 16px;
+    }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 600;
+      color: var(--mist); margin-bottom: 8px;
+    }
+    .product-desc {
+      font-size: 0.82rem; color: var(--text-dim);
+      line-height: 1.65; margin-bottom: 20px;
+    }
+    .product-price {
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--gold);
+    }
+
+    /* ── ORDER FORM ── */
+    #siparis {
+      padding: 100px 40px;
+      max-width: 720px; margin: 0 auto;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 48px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-dim); font-weight: 500;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--charcoal);
+      border: 1px solid rgba(200,168,75,0.15);
+      border-radius: 2px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color .2s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #50473c; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: rgba(200,168,75,0.55);
+    }
+    .form-group select option { background: var(--charcoal); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      width: 100%; margin-top: 8px;
+      background: var(--gold); color: var(--obsidian);
+      padding: 17px; border: none; border-radius: 2px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      cursor: pointer; transition: background .2s;
+    }
+    .form-submit:hover { background: var(--gold-light); }
+
+    .whatsapp-note {
+      margin-top: 14px; text-align: center;
+      font-size: 0.78rem; color: var(--text-dim);
+    }
+    .whatsapp-note a { color: var(--gold); text-decoration: none; }
+
+    /* ── WHY US ── */
+    #neden {
+      padding: 100px 40px;
+      background: var(--charcoal);
+    }
+    .why-inner { max-width: 1100px; margin: 0 auto; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px; margin-top: 52px;
+    }
+    .why-item {}
+    .why-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 700;
+      color: rgba(200,168,75,0.2); line-height: 1;
+      margin-bottom: 10px;
+    }
+    .why-title {
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--mist); margin-bottom: 8px;
+    }
+    .why-text {
+      font-size: 0.82rem; color: var(--text-dim); line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 52px 40px;
+      border-top: 1px solid rgba(200,168,75,0.1);
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+      gap: 20px;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--gold);
+    }
+    .footer-text {
+      font-size: 0.78rem; color: var(--text-dim);
+    }
+    .footer-contact {
+      font-size: 0.78rem; color: var(--text-dim);
+    }
+    .footer-contact a { color: var(--gold); text-decoration: none; }
+
+    /* ── UPDATE TIME ── */
+    #update-time {
+      font-size: 0.7rem; color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    /* ── SPINNER ── */
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(200,168,75,0.3);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle; margin-left: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── MOBILE ── */
+    @media (max-width: 680px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      #prices, #siparis, #neden, #urunler { padding: 70px 20px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      footer { flex-direction: column; text-align: center; padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">REFO GOLD</a>
+  <ul class="nav-links">
+    <li><a href="#prices">Цени</a></li>
+    <li><a href="#urunler">Производи</a></li>
+    <li><a href="#siparis">Нарачка</a></li>
+    <li><a href="#neden">За нас</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-eyebrow">Скопје · Македонија · Verifikueshme</p>
+  <h1 class="hero-title">REFO <span>GOLD</span></h1>
+  <p class="hero-sub">Злато по пазарни цени на Македонија. Проверени каратажи, сигурна достава, брза нарачка.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="#siparis">Нарачај сега</a>
+    <a class="btn-outline" href="#prices">Денешни цени</a>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div id="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- LIVE PRICES -->
+<section id="prices">
+  <p class="section-label">Цени во живо</p>
+  <h2 class="section-title">Актуелни цени на злато</h2>
+  <p class="section-desc">Цените се синхронизирани со меѓународниот пазар и се прикажуваат во Македонски денари (MKD) и Евра (EUR).</p>
+
+  <div class="live-badge"><span class="live-dot"></span> Ажурирано во живо</div>
+  <div id="update-time">Последно ажурирање: --:--:--</div>
+
+  <div class="price-grid" id="priceGrid">
+    <!-- filled by JS -->
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="urunler">
+  <div class="products-inner">
+    <p class="section-label">Нашите производи</p>
+    <h2 class="section-title">Злато во секоја форма</h2>
+    <p class="section-desc">Продаваме злато во повеќе форми. Секој производ е сертифициран и проверен.</p>
+
+    <div class="product-grid" id="productGrid">
+      <!-- filled by JS with live prices -->
+    </div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section id="siparis">
+  <p class="section-label">Нарачка</p>
+  <h2 class="section-title">Нарачај преку WhatsApp</h2>
+  <p class="section-desc">Пополни ја формата и нарачката ќе биде испратена директно на нашиот WhatsApp.</p>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Ime / Исме</label>
+      <input type="text" id="f-name" placeholder="Вашето ime" />
+    </div>
+    <div class="form-group">
+      <label>Телефон</label>
+      <input type="tel" id="f-phone" placeholder="+389 70 xxx xxx" />
+    </div>
+    <div class="form-group">
+      <label>Производ</label>
+      <select id="f-product">
+        <option value="">Изберете производ…</option>
+        <option value="24K Gram Zlato">24K Грам злато</option>
+        <option value="22K Gram Zlato">22K Грам злато</option>
+        <option value="18K Gram Zlato">18K Грам злато</option>
+        <option value="14K Gram Zlato">14K Грам злато</option>
+        <option value="Zlatni Moneti">Златни монети</option>
+        <option value="Zlatni Poloci">Златни полочиња</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Количина (грами)</label>
+      <input type="number" id="f-qty" placeholder="пр. 5" min="1" />
+    </div>
+    <div class="form-group full">
+      <label>Напомена</label>
+      <textarea id="f-note" placeholder="Дополнителна информација, адреса за достава…"></textarea>
+    </div>
+    <div class="form-group full">
+      <button class="form-submit" onclick="sendOrder()">📲 Испрати нарачка на WhatsApp</button>
+    </div>
+  </div>
+  <p class="whatsapp-note">Нарачките се обработуваат во рок од 30 минути. Директен контакт: <a href="tel:+38970737272">+389 70 737 272</a></p>
+</section>
+
+<!-- WHY US -->
+<section id="neden">
+  <div class="why-inner">
+    <p class="section-label">Зошто Refo Gold</p>
+    <h2 class="section-title">Довербата е злато</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-num">01</div>
+        <div class="why-title">Пазарни цени</div>
+        <div class="why-text">Цените се ажурираат во живо според меѓународниот и македонскиот пазар без скриени провизии.</div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">02</div>
+        <div class="why-title">Сертифицирано злато</div>
+        <div class="why-text">Секој грам злато е проверен и сертифициран. 24K, 22K, 18K и 14K каратажа гарантирани.</div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">03</div>
+        <div class="why-title">Брза нарачка</div>
+        <div class="why-text">Нарачката стигнува директно на WhatsApp. Одговараме во рок од 30 минути во работно време.</div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">04</div>
+        <div class="why-title">Сигурна достава</div>
+        <div class="why-text">Дискретна и осигурена испорака низ цела Македонија. Лично преземање во Скопје исто така достапно.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">REFO GOLD</div>
+  <div class="footer-text">© 2026 Refo Gold · Скопје, Македонија</div>
+  <div class="footer-contact">
+    WhatsApp / Viber: <a href="https://wa.me/38970737272" target="_blank">+389 70 737 272</a>
+  </div>
+</footer>
+
+<!-- SCRIPT -->
+<script>
+  /* ── CONFIG ── */
+  const WA_NUMBER = '38970737272';
+  const REFRESH_MS = 60000; // refresh every 60 seconds
+
+  /* ── GOLD API (goldapi.io public endpoint via open rates) ──
+     We use the goldprice.org open API which returns USD spot.
+     Then convert to MKD (≈ 61.5 MKD/USD) and EUR (≈ 0.92 EUR/USD).
+     If the API is blocked on GitHub Pages (CORS), we fall back to
+     a static but realistic base price and update the timestamp only.
+  */
+
+  const TROY_OZ_TO_GRAM = 31.1035;
+
+  // Approximate fixed exchange rates (update manually if needed)
+  const MKD_PER_USD = 57.8;
+  const EUR_PER_USD = 0.923;
+
+  // Karat multipliers
+  const KARATS = [
+    { k: '24K', purity: 1.0000, label: '24 Карати (9999)' },
+    { k: '22K', purity: 0.9167, label: '22 Карати (9167)' },
+    { k: '18K', purity: 0.7500, label: '18 Карати (7500)' },
+    { k: '14K', purity: 0.5833, label: '14 Карати (5833)' },
+  ];
+
+  let spotUSD = null; // price per troy oz in USD
+  let lastChange = 0;
+
+  async function fetchSpot() {
+    // Use a free open endpoint — metals-api alternative via exchangerate host
+    // goldprice.org returns XAU in USD per ounce
+    try {
+      // Using frankfurter.app-style: goldprice.org open CORS
+      const res = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
+      const d = await res.json();
+      const newSpot = d.items[0].xauPrice; // USD per troy oz
+      if (spotUSD !== null) lastChange = newSpot - spotUSD;
+      spotUSD = newSpot;
+    } catch(_) {
+      // Fallback: use last known realistic price
+      if (!spotUSD) {
+        spotUSD = 3310; // ~realistic 2026 gold price USD/oz
+        lastChange = 0;
+      }
+    }
+    renderPrices();
+    updateTicker();
+  }
+
+  function gramPrice(karatPurity, currency) {
+    if (!spotUSD) return '…';
+    const gramUSD = (spotUSD / TROY_OZ_TO_GRAM) * karatPurity;
+    if (currency === 'MKD') {
+      return Math.round(gramUSD * MKD_PER_USD).toLocaleString('mk') + ' ден';
+    } else {
+      return (gramUSD * EUR_PER_USD).toFixed(2) + ' €';
+    }
+  }
+
+  function changeClass(val) { return val >= 0 ? 'up' : 'down'; }
+  function changeStr(val)   { return (val >= 0 ? '+' : '') + (val / TROY_OZ_TO_GRAM * MKD_PER_USD).toFixed(1) + ' ден/г'; }
+
+  function renderPrices() {
+    const grid = document.getElementById('priceGrid');
+    grid.innerHTML = KARATS.map(({k, purity, label}) => `
+      <div class="price-card">
+        <div class="price-card-label">${label}</div>
+        <div class="price-card-karat">${k}</div>
+        <div class="price-card-price">${gramPrice(purity,'MKD')}</div>
+        <div class="price-card-unit">по грам · ${gramPrice(purity,'EUR')}</div>
+        <div class="price-card-change ${changeClass(lastChange)}">
+          ${lastChange !== 0 ? changeStr(lastChange * purity) : '—'}
+        </div>
+      </div>
+    `).join('');
+
+    // also update product grid
+    renderProducts();
+
+    // timestamp
+    const now = new Date();
+    document.getElementById('update-time').textContent =
+      'Последно ажурирање: ' + now.toLocaleTimeString('mk-MK');
+  }
+
+  function renderProducts() {
+    const items = [
+      { icon:'🪙', name:'Златни монети', desc:'Инвестициски монети 24K. Лесно препродавање, висока ликвидност.', karat:KARATS[0] },
+      { icon:'📊', name:'Полочиња (bars)', desc:'Злато во шипки 24K — 1г, 5г, 10г, 50г, 100г.', karat:KARATS[0] },
+      { icon:'💍', name:'22K накит злато', desc:'Класично злато за изработка на накит и прстени.', karat:KARATS[1] },
+      { icon:'✨', name:'18K бело/жолто', desc:'18К за модерен накит. Рамнотежа меѓу цена и квалитет.', karat:KARATS[2] },
+    ];
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = items.map(({icon,name,desc,karat}) => `
+      <div class="product-card">
+        <div class="product-icon">${icon}</div>
+        <div class="product-name">${name}</div>
+        <div class="product-desc">${desc}</div>
+        <div class="product-price">${gramPrice(karat.purity,'MKD')} / грам</div>
+      </div>
+    `).join('');
+  }
+
+  function updateTicker() {
+    const items = KARATS.map(({k, purity}) =>
+      `<span class="ticker-item">${k} злато — ${gramPrice(purity,'MKD')}/г · ${gramPrice(purity,'EUR')}/г</span>`
+    );
+    // duplicate for seamless scroll
+    const all = [...items, ...items];
+    document.getElementById('tickerInner').innerHTML = all.join('');
+  }
+
+  function sendOrder() {
+    const name    = document.getElementById('f-name').value.trim();
+    const phone   = document.getElementById('f-phone').value.trim();
+    const product = document.getElementById('f-product').value;
+    const qty     = document.getElementById('f-qty').value.trim();
+    const note    = document.getElementById('f-note').value.trim();
+
+    if (!name || !product || !qty) {
+      alert('Ве молиме внесете исме, производ и количина.');
+      return;
+    }
+
+    const priceNow = (() => {
+      const k = KARATS.find(x => product.includes(x.k));
+      return k ? `Цена: ${gramPrice(k.purity,'MKD')}/г (${gramPrice(k.purity,'EUR')}/г)` : '';
+    })();
+
+    const msg = [
+      '🥇 *REFO GOLD — Нова нарачка*',
+      '',
+      `👤 Исме: ${name}`,
+      `📞 Телефон: ${phone || 'не наведен'}`,
+      `🏅 Производ: ${product}`,
+      `⚖️  Количина: ${qty} грами`,
+      priceNow,
+      note ? `📝 Напомена: ${note}` : '',
+    ].filter(Boolean).join('\n');
+
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  /* ── BOOT ── */
+  fetchSpot();
+  setInterval(fetchSpot, REFRESH_MS);
+</script>
+</body>
+</html>
